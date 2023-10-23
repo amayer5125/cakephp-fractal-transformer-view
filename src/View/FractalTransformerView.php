@@ -100,10 +100,14 @@ class FractalTransformerView extends JsonView
      */
     protected function getTransformer($var, $varName = null): ?TransformerAbstract
     {
-        $_transform = $this->getConfig('transform');
+        $transform = $this->getConfig('transform');
         $transformerClass = $varName
-            ? Hash::get((array)$_transform, $varName)
-            : $_transform;
+            ? Hash::get((array)$transform, $varName)
+            : $transform;
+
+        if (is_object($transformerClass) && $transformerClass instanceof TransformerAbstract) {
+            return $transformerClass;
+        }
 
         if (is_null($transformerClass)) {
             $transformerClass = $this->getTransformerClass($var);

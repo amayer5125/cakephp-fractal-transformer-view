@@ -6,6 +6,7 @@ namespace FractalTransformerView\Test\TestCase\View;
 use Cake\TestSuite\TestCase;
 use Exception;
 use FractalTransformerView\Serializer\ArraySerializer;
+use FractalTransformerView\Test\App\Model\Transformer\ArticleTransformer;
 use FractalTransformerView\View\FractalTransformerView;
 use League\Fractal\Manager;
 use stdClass;
@@ -174,6 +175,23 @@ class FractalTransformerViewTest extends TestCase
 
         $this->assertInstanceOf(
             'FractalTransformerView\Test\App\Model\Transformer\ArticleTransformer',
+            $this->protectedMethodCall($view, 'getTransformer', [$entity])
+        );
+    }
+
+    /**
+     * @throws \ReflectionException
+     */
+    public function testGetTransformerObject()
+    {
+        $entity = $this->Articles->newEmptyEntity();
+
+        $view = new FractalTransformerView();
+        $transformer = new ArticleTransformer();
+        $view->setConfig('transform', $transformer);
+
+        $this->assertSame(
+            $transformer,
             $this->protectedMethodCall($view, 'getTransformer', [$entity])
         );
     }
